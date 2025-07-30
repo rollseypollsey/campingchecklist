@@ -48,6 +48,7 @@
           { id: generateId(), name: 'Headlamps or flashlights (extra batteries)', checked: false, optional: false },
           { id: generateId(), name: 'Lantern', checked: false, optional: false },
           { id: generateId(), name: 'Lantern fuel or batteries', checked: false, optional: true }
+          ,{ id: generateId(), name: 'Quick‑dry towel', checked: false, optional: false }
         ]
       },
       {
@@ -92,6 +93,21 @@
           { id: generateId(), name: 'Extra layers for warmth', checked: false, optional: false },
           { id: generateId(), name: 'Gloves', checked: false, optional: true },
           { id: generateId(), name: 'Hats', checked: false, optional: true }
+          ,{ id: generateId(), name: 'Moisture‑wicking underwear', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Moisture‑wicking T‑shirts', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Quick‑drying pants/shorts', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Long‑sleeve shirts (for sun and bugs)', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Lightweight fleece or jacket', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Socks (synthetic or wool)', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Sleepwear (extra)', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Sunglasses', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Sun hat', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Rainwear (jacket and pants)', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Long underwear', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Warm insulated jacket or vest', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Fleece pants', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Gloves or mittens', checked: false, optional: false }
+          ,{ id: generateId(), name: 'Warm hat', checked: false, optional: false }
         ]
       },
       {
@@ -106,6 +122,20 @@
           { id: generateId(), name: 'Soap', checked: false, optional: false },
           { id: generateId(), name: '60% or higher alcohol‑based hand sanitizer', checked: false, optional: false },
           { id: generateId(), name: 'Toilet paper', checked: false, optional: false }
+        ]
+      },
+      {
+        id: generateId(),
+        name: 'Tools',
+        items: [
+          { id: generateId(), name: 'Multi‑tool', checked: false, optional: false },
+          { id: generateId(), name: 'Duct tape', checked: false, optional: false },
+          { id: generateId(), name: 'Extra cord', checked: false, optional: false },
+          { id: generateId(), name: 'Tent‑pole repair sleeve', checked: false, optional: false },
+          { id: generateId(), name: 'Pad/Mattress repair kit', checked: false, optional: false },
+          { id: generateId(), name: 'Mallet or hammer', checked: false, optional: false },
+          { id: generateId(), name: 'Saw or axe', checked: false, optional: false },
+          { id: generateId(), name: 'Small broom and dustpan', checked: false, optional: false }
         ]
       },
       {
@@ -239,73 +269,72 @@
       // Item list container
       const listEl = document.createElement('ul');
       listEl.className = 'item-list';
-      // Render items
-      category.items.forEach((item) => {
+      // Render items: required first, then optional. Optional items are moved
+      // to a separate section below the required items. We no longer show
+      // the optional toggle button; items retain their optional flag but
+      // cannot be toggled via the UI.
+      const requiredItems = category.items.filter((item) => !item.optional);
+      const optionalItems = category.items.filter((item) => item.optional);
+      const renderItem = (item) => {
         const li = document.createElement('li');
         li.className = 'item';
         li.dataset.itemId = item.id;
         if (item.optional) li.classList.add('optional');
         // Add checked class if item is initially checked
         if (item.checked) li.classList.add('checked');
-
-        // Drag handle to enable drag‑and‑drop. We use a separate element
-        // instead of making the entire item draggable so that editing
-        // the item name doesn’t conflict with drag actions.
+        // Drag handle for reordering
         const dragHandle = document.createElement('span');
         dragHandle.className = 'drag-handle';
         dragHandle.innerHTML = '≡';
         li.appendChild(dragHandle);
-
+        // Checkbox
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.className = 'item-checkbox';
         checkbox.checked = !!item.checked;
         checkbox.addEventListener('change', () => {
           item.checked = checkbox.checked;
-          // Toggle class to strike through the text when checked
           li.classList.toggle('checked', checkbox.checked);
           saveData();
         });
         li.appendChild(checkbox);
-
+        // Editable name
         const nameSpan = document.createElement('span');
         nameSpan.className = 'item-name';
         nameSpan.contentEditable = 'true';
         nameSpan.innerText = item.name;
-        // On blur update the item name
         nameSpan.addEventListener('blur', () => {
           item.name = nameSpan.innerText.trim() || 'Untitled Item';
           saveData();
         });
         li.appendChild(nameSpan);
-
-        // Optional toggle button
-        const optionalBtn = document.createElement('button');
-        optionalBtn.className = 'toggle-optional';
-        optionalBtn.innerHTML = item.optional ? '⭐' : '☆';
-        if (item.optional) optionalBtn.classList.add('optional-true');
-        optionalBtn.title = item.optional ? 'Optional (click to make required)' : 'Required (click to make optional)';
-        optionalBtn.addEventListener('click', () => {
-          item.optional = !item.optional;
-          saveData();
-          render();
-        });
-        li.appendChild(optionalBtn);
-
-        // Delete item button
+        // Delete item button with trash can icon
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-item';
         deleteBtn.title = 'Delete item';
-        deleteBtn.textContent = '✖';
+        deleteBtn.textContent = '🗑️';
         deleteBtn.addEventListener('click', () => {
           category.items = category.items.filter((i) => i.id !== item.id);
           saveData();
           render();
         });
         li.appendChild(deleteBtn);
-
-        listEl.appendChild(li);
+        return li;
+      };
+      // Render required items
+      requiredItems.forEach((item) => {
+        listEl.appendChild(renderItem(item));
       });
+      // If there are optional items, insert a heading
+      if (optionalItems.length > 0) {
+        const heading = document.createElement('div');
+        heading.className = 'optional-heading';
+        heading.textContent = 'Optional Items';
+        listEl.appendChild(heading);
+        optionalItems.forEach((item) => {
+          listEl.appendChild(renderItem(item));
+        });
+      }
       section.appendChild(listEl);
 
       // Add item button

@@ -148,23 +148,23 @@ main {
   background-color: #f0f0f0;
 }
 
-.toggle-optional,
+/* Delete icon button. We remove the optional toggle button entirely, so only
+   delete-item remains. It is right-aligned by using auto margin on the
+   left, and displays a trash can icon. */
 .delete-item {
   background: transparent;
   border: none;
   font-size: 1em;
   cursor: pointer;
-  /* add more space between the item label and icons */
-  margin-left: 12px;
+  margin-left: auto;
+  color: #c00;
 }
 
-.toggle-optional {
-  color: #888;
+/* Add hover effect for delete icon */
+.delete-item:hover {
+  color: #f00;
 }
 
-.toggle-optional.optional-true {
-  color: #f39c12;
-}
 
 .delete-item {
   color: #c00;
@@ -193,10 +193,24 @@ main {
   display: none;
 }
 
+/* Hide the optional heading when optional items are hidden */
+.hidden-optional .optional-heading {
+  display: none;
+}
+
 /* Strike through checked items */
 .item.checked .item-name {
   text-decoration: line-through;
   opacity: 0.6;
+}
+
+/* Optional heading that separates required items from optional ones */
+.optional-heading {
+  font-weight: bold;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding-left: 24px; /* align with item names after checkbox and drag handle */
+  color: #555;
 }
 
 @media print {
