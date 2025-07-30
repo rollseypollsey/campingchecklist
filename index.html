@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family Camping Checklist</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <h1>Family Camping Checklist</h1>
+        <div class="controls">
+          <label class="toggle-optional-label">
+            <input type="checkbox" id="toggleOptional" checked />
+            Show optional items
+          </label>
+          <button id="printButton" class="control-button">Print</button>
+          <button id="shareButton" class="control-button">Share</button>
+          <button id="resetButton" class="control-button">Reset</button>
+        </div>
+      </header>
+      <main>
+        <div id="categories"></div>
+        <button id="addCategoryButton" class="add-category-button">+ Add Category</button>
+      </main>
+    </div>
+    <!-- External library for drag & drop -->
+    <script src="Sortable.min.js"></script>
+    <!-- Application script -->
+    <script src="script.js"></script>
+  </body>
+</html>
