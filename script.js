@@ -39,6 +39,7 @@
           { id: generateId(), name: 'Tent, poles, stakes', checked: false, optional: false },
           { id: generateId(), name: 'Tent footprint (ground cover for under your tent)', checked: false, optional: false },
           { id: generateId(), name: 'Extra tarp or canopy', checked: false, optional: true },
+          { id: generateId(), name: 'Sleeping bag for each camper', checked: false, optional: false },
           { id: generateId(), name: 'Sleeping pad for each camper', checked: false, optional: false },
           { id: generateId(), name: 'Repair kit for pads, mattress, tent, tarp', checked: false, optional: false },
           { id: generateId(), name: 'Pillows', checked: false, optional: false },
@@ -67,7 +68,7 @@
           { id: generateId(), name: 'Food‑storage containers, bags', checked: false, optional: false },
           { id: generateId(), name: 'Trash bags', checked: false, optional: false },
           { id: generateId(), name: 'Cooler', checked: false, optional: false },
-          { id: generateId(), name: 'Ice', checked: false, optional: false },
+          { id: generateId(), name: 'Ice', checked: false, optional: true },
           { id: generateId(), name: 'Water bottles', checked: false, optional: false },
           { id: generateId(), name: 'Plates, bowls, forks, spoons, knives', checked: false, optional: false },
           { id: generateId(), name: 'Cups, mugs', checked: false, optional: true },
@@ -76,9 +77,8 @@
           { id: generateId(), name: 'Foil', checked: false, optional: false },
           { id: generateId(), name: 'Biodegradable soap', checked: false, optional: true },
           { id: generateId(), name: 'Sponge, dishcloth, dishtowel', checked: false, optional: true },
-          { id: generateId(), name: 'Paper towels', checked: false, optional: false },
+          { id: generateId(), name: 'Paper towels', checked: false, optional: true },
           { id: generateId(), name: 'Extra bin for washing dishes', checked: false, optional: true }
-          { id: generateId(), name: 'Water jug', checked: false, optional: true }
         ]
       },
       {
